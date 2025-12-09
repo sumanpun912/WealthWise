@@ -94,7 +94,7 @@ export function RecentTransactions({ maxItems = 5 }: { maxItems?: number }) {
         {!loading && recentTransactions.length === 0 && (
           <div className="text-center py-10 space-y-3">
             <p className="text-lg text-muted-foreground">No transactions recorded yet.</p>
-            <p className="text-sm text-muted-foreground">Let's get started by adding your first one!</p>
+            <p className="text-sm text-muted-foreground">Let&apos;s get started by adding your first one!</p>
             <Button asChild variant="default" className="mt-2">
               <Link href="/transactions/add">
                 <PlusCircle className="mr-2 h-4 w-4" />
@@ -177,7 +177,7 @@ export function RecentTransactions({ maxItems = 5 }: { maxItems?: number }) {
               <AlertDialogTitle>Are you sure?</AlertDialogTitle>
               <AlertDialogDescription>
                 This action cannot be undone. This will permanently delete the transaction
-                 "{transactionToDelete.description}" amounting to ${transactionToDelete.amount.toFixed(2)}.
+                 &quot;{transactionToDelete.description}&quot; amounting to ${transactionToDelete.amount.toFixed(2)}.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>

@@ -40,9 +40,10 @@ export default function ForgotPasswordPage() {
     try {
       await sendPasswordResetEmail(auth, data.email);
       setSuccess('Password reset email sent! Please check your inbox (and spam folder).');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Forgot password error:', err);
-      setError(err.message || 'Failed to send password reset email.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to send password reset email.';
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

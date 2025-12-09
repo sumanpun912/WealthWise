@@ -30,7 +30,7 @@ export function ForecastForm() {
   const { toast } = useToast();
   const [isForecasting, setIsForecasting] = useState(false);
   const [forecastResult, setForecastResult] = useState<ForecastExpensesOutput | null>(null);
-  const [chartData, setChartData] = useState<any[]>([]);
+  const [chartData, setChartData] = useState<Array<{ period: string; actual: number; predicted: number }>>([]);
   const { transactions, loading: transactionsLoading } = useTransactions();
   const [selectedYear, setSelectedYear] = useState<string>(new Date().getFullYear().toString());
   const [selectedMonth, setSelectedMonth] = useState<string>((new Date().getMonth() + 1).toString());
@@ -70,7 +70,7 @@ export function ForecastForm() {
     form.setValue('spendingPatterns', spendingPatternsSummary);
   }, [spendingPatternsSummary, form]);
 
-  const onSubmit = async (data: ForecastFormData) => {
+  const onSubmit = async () => {
     setIsForecasting(true);
     setForecastResult(null);
 

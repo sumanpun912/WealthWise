@@ -44,12 +44,12 @@ export default function ProfilePage() {
 
   const convertToCSV = (data: typeof transactions) => {
     if (data.length === 0) return "";
-    const replacer = (key: string, value: any) => value === null || value === undefined ? '' : value;
+    const replacer = (_key: string, value: unknown) => value === null || value === undefined ? '' : value;
     const header = Object.keys(data[0]).filter(key => key !== 'userId').join(','); // Exclude userId from header
     const rows = data.map(row =>
       Object.keys(row)
         .filter(key => key !== 'userId') // Exclude userId from data rows
-        .map(fieldName => JSON.stringify((row as any)[fieldName], replacer))
+        .map(fieldName => JSON.stringify((row as Record<string, unknown>)[fieldName], replacer))
         .join(',')
     );
     return [header, ...rows].join('\r\n');

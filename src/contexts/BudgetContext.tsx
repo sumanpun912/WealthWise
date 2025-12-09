@@ -85,10 +85,11 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       });
       toast({ title: "Success", description: "Budget added successfully!", variant: "default" });
       return docRef.id;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[BudgetContext] Error adding budget:", err);
-      setError(`Could not save the budget: ${err.message}`);
-      toast({ title: "Error", description: `Could not save budget: ${err.message}`, variant: "destructive" });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not save the budget: ${errorMessage}`);
+      toast({ title: "Error", description: `Could not save budget: ${errorMessage}`, variant: "destructive" });
       return null;
     }
   }, [currentUser, toast]);
@@ -103,16 +104,15 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     try {
       const budgetRef = doc(db, 'budgets', id);
       // Ensure userId isn't accidentally overwritten if it's part of budgetData
-      const dataToUpdate = { ...budgetData };
-      if ('userId' in dataToUpdate) {
-        delete (dataToUpdate as any).userId;
-      }
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { userId: _, ...dataToUpdate } = budgetData;
       await updateDoc(budgetRef, dataToUpdate);
       toast({ title: "Success", description: "Budget updated successfully!", variant: "default" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[BudgetContext] Error updating budget:", err);
-      setError(`Could not update the budget: ${err.message}`);
-      toast({ title: "Error", description: `Could not update budget: ${err.message}`, variant: "destructive" });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not update the budget: ${errorMessage}`);
+      toast({ title: "Error", description: `Could not update budget: ${errorMessage}`, variant: "destructive" });
     }
   }, [currentUser, toast]);
 
@@ -127,10 +127,11 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
       const budgetRef = doc(db, 'budgets', id);
       await deleteDoc(budgetRef);
       toast({ title: "Success", description: "Budget deleted successfully!", variant: "default" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[BudgetContext] Error deleting budget:", err);
-      setError(`Could not delete the budget: ${err.message}`);
-      toast({ title: "Error", description: `Could not delete budget: ${err.message}`, variant: "destructive" });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not delete the budget: ${errorMessage}`);
+      toast({ title: "Error", description: `Could not delete budget: ${errorMessage}`, variant: "destructive" });
     }
   }, [currentUser, toast]);
 

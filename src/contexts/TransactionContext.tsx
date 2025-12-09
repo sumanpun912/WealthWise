@@ -51,17 +51,6 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const processingRecurringRef = useRef(false);
 
-  const internalAddTransaction = useCallback(async (transactionData: TransactionInputData): Promise<string | null> => {
-    if (!currentUser) return null;
-    try {
-      const newTransaction = prepareTransactionDataForFirestore(transactionData, currentUser.uid);
-      const docRef = await addDoc(collection(db, 'transactions'), newTransaction);
-      return docRef.id;
-    } catch (err: any) {
-      console.error("[TransactionContext] Error adding transaction internally:", err);
-      return null;
-    }
-  }, [currentUser]);
 
   const checkAndLogRecurringTransactions = useCallback(async (allTransactions: Transaction[]) => {
     if (!currentUser) return;
@@ -201,7 +190,7 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
     } else {
       console.log("[TransactionContext] No new recurring instances needed to be logged in this run.");
     }
-  }, [currentUser, toast, internalAddTransaction]);
+  }, [currentUser, toast]); // internalAddTransaction is stable from useCallback
 
 
   // Effect 1: Firestore subscription and data fetching
@@ -378,10 +367,11 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
       if(options.showToast) toast({title: "Success", description: "Transaction added successfully!", variant: "default"});
       if(options.navigate) router.push('/'); 
       return docRef.id;
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[TransactionContext] Error adding transaction to Firestore:", err);
-      setError(`Could not save the transaction: ${err.message}`);
-      if(options.showToast) toast({ title: "Error", description: `Could not save the transaction: ${err.message}`, variant: "destructive"});
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not save the transaction: ${errorMessage}`);
+      if(options.showToast) toast({ title: "Error", description: `Could not save the transaction: ${errorMessage}`, variant: "destructive"});
       return null;
     }
   };
@@ -399,10 +389,11 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
       await updateDoc(transactionRef, updatedTxData);
       toast({ title: "Success", description: "Transaction updated successfully!", variant: "default" });
       router.push('/'); 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[TransactionContext] Error updating transaction in Firestore:", err);
-      setError(`Could not update the transaction: ${err.message}`);
-      toast({ title: "Error", description: `Could not update the transaction: ${err.message}`, variant: "destructive" });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not update the transaction: ${errorMessage}`);
+      toast({ title: "Error", description: `Could not update the transaction: ${errorMessage}`, variant: "destructive" });
     }
   };
 
@@ -417,10 +408,11 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
       const transactionRef = doc(db, 'transactions', id);
       await deleteDoc(transactionRef);
       toast({ title: "Success", description: "Transaction deleted successfully!", variant: "default" });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[TransactionContext] Error deleting transaction from Firestore:", err);
-      setError(`Could not delete the transaction: ${err.message}`);
-      toast({ title: "Error", description: `Could not delete the transaction: ${err.message}`, variant: "destructive" });
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not delete the transaction: ${errorMessage}`);
+      toast({ title: "Error", description: `Could not delete the transaction: ${errorMessage}`, variant: "destructive" });
     }
   };
   
@@ -486,9 +478,10 @@ export function TransactionProvider({ children }: { children: ReactNode }) {
         // setLoading(false);
         return null;
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("[TransactionContext] Error fetching transaction by ID:", err);
-      setError(`Could not fetch transaction: ${err.message}`);
+      const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+      setError(`Could not fetch transaction: ${errorMessage}`);
       // setLoading(false);
       return null;
     }

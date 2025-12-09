@@ -6,8 +6,8 @@ import { useBudgets } from '@/contexts/BudgetContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from '@/components/ui/dialog';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { BudgetForm } from '@/components/budgets/BudgetForm';
 import Loading from '@/app/loading';
 import type { Budget } from '@/lib/types';
@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Terminal } from 'lucide-react';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 
 export default function BudgetsPage() {
   const { currentUser, loading: authLoading } = useAuth();
@@ -77,9 +77,9 @@ export default function BudgetsPage() {
   
   const formatMonthYear = (monthStr: string) => {
     try {
-      const date = parse(monthStr, 'yyyy-MM', new Date());
+      const date = new Date(monthStr + '-01');
       return format(date, 'MMMM yyyy');
-    } catch (e) {
+    } catch {
       return monthStr; // Fallback if parsing fails
     }
   };

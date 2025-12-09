@@ -14,7 +14,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { CalendarIcon, Loader2, Wand2 } from 'lucide-react';
-import { format, parseISO, isValid, set } from 'date-fns';
+import { format, parseISO, isValid } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { useTransactions } from '@/contexts/TransactionContext';
 import type { Transaction } from '@/lib/types';
@@ -22,7 +22,6 @@ import { categorizeTransaction } from '@/ai/flows/categorize-transaction';
 import type { CategorizeTransactionOutput } from '@/ai/flows/categorize-transaction';
 import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useRouter } from 'next/navigation';
 
 const transactionSchema = z.object({
   description: z.string().min(1, 'Description is required'),
@@ -67,7 +66,6 @@ interface TransactionFormProps {
 export function TransactionForm({ initialData, isEditMode = false }: TransactionFormProps) {
   const { addTransaction, updateTransaction } = useTransactions();
   const { toast } = useToast();
-  const router = useRouter();
   const [isCategorizing, setIsCategorizing] = useState(false);
   const [suggestedCategory, setSuggestedCategory] = useState<CategorizeTransactionOutput | null>(null);
   const [availableCategories, setAvailableCategories] = useState<string[]>(defaultCategories);

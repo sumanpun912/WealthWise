@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Loader2 } from 'lucide-react';
 import type { Budget, BudgetFormData } from '@/lib/types';
 import { useBudgets } from '@/contexts/BudgetContext';
-import { format, parse } from 'date-fns';
+import { format } from 'date-fns';
 
 const budgetSchema = z.object({
   category: z.string().min(1, 'Category is required'),

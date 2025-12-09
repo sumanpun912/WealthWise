@@ -9,7 +9,6 @@ import {
   ResponsiveContainer, 
   XAxis, 
   YAxis, 
-  Tooltip as RechartsTooltip,
   PieChart,
   Pie,
   Cell,
@@ -20,12 +19,12 @@ import {
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useTransactions } from '@/contexts/TransactionContext';
 import type { SpendingByCategory } from '@/lib/types';
-import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltip, ChartTooltipContent, ChartLegendContent } from '@/components/ui/chart';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { PlusCircle, BarChartBig, PieChartIcon, LineChartIcon } from 'lucide-react'; // Added new icons
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 // Define a consistent chartConfig for all chart types
 const chartConfig = {
@@ -35,7 +34,7 @@ const chartConfig = {
   },
   // Add other categories if needed, for pie chart colors primarily
   // For simplicity, we'll define a COLORS array for pie chart directly
-} satisfies Record<string, any>;
+} satisfies Record<string, { color: string; label: string }>;
 
 const PIE_CHART_COLORS = [
   'hsl(var(--chart-1))', 
@@ -113,7 +112,7 @@ export function SpendingChart() {
         <CardDescription>Your top spending categories. Select a chart type below.</CardDescription>
       </CardHeader>
       <CardContent>
-        <Tabs defaultValue="bar" onValueChange={(value) => setSelectedChartType(value as any)} className="mb-4">
+        <Tabs defaultValue="bar" onValueChange={(value) => setSelectedChartType(value as 'bar' | 'pie' | 'line')} className="mb-4">
           <TabsList className="grid w-full grid-cols-3 sm:w-auto sm:inline-flex">
             <TabsTrigger value="bar" className="flex items-center gap-2">
               <BarChartBig className="h-4 w-4" /> Bar Chart

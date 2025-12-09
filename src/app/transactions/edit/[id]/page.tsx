@@ -8,7 +8,8 @@ import { useTransactions } from '@/contexts/TransactionContext';
 import type { Transaction } from '@/lib/types';
 import Loading from '@/app/loading';
 import { useAuth } from '@/contexts/AuthContext';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { AlertTriangle } from 'lucide-react';
 
 export default function EditTransactionPage() {
