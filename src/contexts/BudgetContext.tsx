@@ -103,10 +103,8 @@ export function BudgetProvider({ children }: { children: ReactNode }) {
     setError(null);
     try {
       const budgetRef = doc(db, 'budgets', id);
-      // Ensure userId isn't accidentally overwritten if it's part of budgetData
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { userId: _, ...dataToUpdate } = budgetData;
-      await updateDoc(budgetRef, dataToUpdate);
+      // BudgetFormData already omits userId, so we can use budgetData directly
+      await updateDoc(budgetRef, budgetData);
       toast({ title: "Success", description: "Budget updated successfully!", variant: "default" });
     } catch (err: unknown) {
       console.error("[BudgetContext] Error updating budget:", err);

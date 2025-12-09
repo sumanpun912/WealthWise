@@ -128,7 +128,7 @@ export function SpendingChart() {
 
         <ChartContainer config={chartConfig} className="h-[300px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            {selectedChartType === 'bar' && (
+            {selectedChartType === 'bar' ? (
               <BarChart data={spendingData} margin={{ top: 5, right: 20, left: -20, bottom: 50 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                 <XAxis 
@@ -153,9 +153,7 @@ export function SpendingChart() {
                 />
                 <Bar dataKey="amount" fill="var(--color-amount)" radius={8} animationBegin={800} animationDuration={800} />
               </BarChart>
-            )}
-
-            {selectedChartType === 'pie' && (
+            ) : selectedChartType === 'pie' ? (
               <PieChart>
                 <ChartTooltip
                   cursor={false}
@@ -201,9 +199,7 @@ export function SpendingChart() {
                 </Pie>
                 <Legend content={<ChartLegendContent nameKey="name" />} />
               </PieChart>
-            )}
-
-            {selectedChartType === 'line' && (
+            ) : (
               <LineChart data={spendingData} margin={{ top: 5, right: 20, left: -20, bottom: 50 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} />
                  <XAxis 

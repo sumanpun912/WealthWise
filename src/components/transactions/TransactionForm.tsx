@@ -359,7 +359,7 @@ export function TransactionForm({ initialData, isEditMode = false }: Transaction
                                     <PopoverContent className="w-auto p-0">
                                         <Calendar
                                             mode="single"
-                                            selected={field.value}
+                                            selected={field.value || undefined}
                                             onSelect={(date) => field.onChange(date)}
                                             disabled={(date) => date < form.getValues('date') || date < new Date("1900-01-01")}
                                             initialFocus

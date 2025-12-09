@@ -122,7 +122,7 @@ export function RecentTransactions({ maxItems = 5 }: { maxItems?: number }) {
                     <TableCell className="font-medium whitespace-nowrap">{formatDateString(transaction.date)}</TableCell>
                     <TableCell className="truncate max-w-xs">
                       <div className="flex items-center gap-2">
-                        {transaction.isRecurring && <Repeat className="h-3 w-3 text-muted-foreground flex-shrink-0" title='Recurring' />}
+                        {transaction.isRecurring && <Repeat className="h-3 w-3 text-muted-foreground flex-shrink-0" aria-label="Recurring" />}
                         <span className="truncate">{transaction.description}</span>
                       </div>
                     </TableCell>

@@ -49,7 +49,7 @@ export default function ProfilePage() {
     const rows = data.map(row =>
       Object.keys(row)
         .filter(key => key !== 'userId') // Exclude userId from data rows
-        .map(fieldName => JSON.stringify((row as Record<string, unknown>)[fieldName], replacer))
+        .map(fieldName => JSON.stringify((row as unknown as Record<string, unknown>)[fieldName], replacer))
         .join(',')
     );
     return [header, ...rows].join('\r\n');
