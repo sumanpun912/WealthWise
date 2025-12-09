@@ -70,7 +70,8 @@ export function ForecastForm() {
     form.setValue('spendingPatterns', spendingPatternsSummary);
   }, [spendingPatternsSummary, form]);
 
-  const onSubmit = async () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmit = async (data: ForecastFormData) => {
     setIsForecasting(true);
     setForecastResult(null);
 
