@@ -5,7 +5,7 @@
 
 import { Server } from 'http';
 import { NextRequest } from 'next/server';
-import { Request, Response } from 'express';
+import { Request, Response as ExpressResponse } from 'express';
 
 export class TestServer {
   private server: Server | null = null;
@@ -16,11 +16,20 @@ export class TestServer {
   async createRequestHandler(
     handler: (req: NextRequest) => Promise<Response>
   ) {
-    return async (req: Request, res: Response) => {
+    return async (req: Request, res: ExpressResponse) => {
       const url = `http://localhost${req.url}`;
+      
+      // Convert Express headers to HeadersInit format
+      const headers = new Headers();
+      Object.entries(req.headers).forEach(([key, value]) => {
+        if (value) {
+          headers.set(key, Array.isArray(value) ? value.join(', ') : value);
+        }
+      });
+
       const nextRequest = new NextRequest(url, {
         method: req.method,
-        headers: req.headers,
+        headers,
         body: req.method !== 'GET' && req.method !== 'HEAD' 
           ? JSON.stringify(req.body) 
           : undefined,
@@ -30,8 +39,8 @@ export class TestServer {
         const response = await handler(nextRequest);
         res.status(response.status);
         
-        // Copy headers
-        response.headers.forEach((value, key) => {
+        // Copy headers from Web API Response to Express response
+        response.headers.forEach((value: string, key: string) => {
           res.setHeader(key, value);
         });
 
