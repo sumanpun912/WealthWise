@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Transaction } from '@/lib/types';
 
 // Mock data store (in production, this would be Firebase)
-let mockTransactions: Transaction[] = [];
+const mockTransactions: Transaction[] = [];
 
 export async function GET(request: NextRequest) {
   try {
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
       { transactions: userTransactions },
       { status: 200 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
       { transaction: newTransaction },
       { status: 201 }
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

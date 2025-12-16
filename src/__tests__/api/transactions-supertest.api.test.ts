@@ -30,7 +30,7 @@ function createTestApp() {
       res.status(response.status);
       const data = await response.json();
       res.json(data);
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
@@ -48,7 +48,7 @@ function createTestApp() {
       res.status(response.status);
       const data = await response.json();
       res.json(data);
-    } catch (error) {
+    } catch {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
